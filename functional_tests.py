@@ -14,7 +14,7 @@ class NewVisitorTest(unittest.TestCase):
     def check_for_row_in_list_table(self, row_text):
         table = self.browser.find_element_by_id("id_list_table")
         rows = self.browser.find_elements_by_tag_name("tr")
-        self.assertIn(row_text, [row.text for row in rows], row_text + "to-do item did not appear in table")
+        self.assertIn(row_text, [row.text for row in rows])
         
 
     def test_can_start_a_list_and_retrieve_it_later(self):
@@ -35,7 +35,7 @@ class NewVisitorTest(unittest.TestCase):
 
         #When she hits "Enter", the page updates and "1: Buy peacock feathers is an item on to-do list
         inputbox.send_keys(Keys.ENTER)
-        check_for_row_in_list_table(self, "1. Buy peacock feathers")
+        self.check_for_row_in_list_table("1: Buy peacock feathers")
 
         #There's a text box inviting her to add another item. She enters "Use peacock feathers to make a fly"
         inputbox = self.browser.find_element_by_id('id_new_item')
@@ -44,8 +44,8 @@ class NewVisitorTest(unittest.TestCase):
         
 
         #The page updates, and shows both items on her list
-        check_for_row_in_list_table(self, "1. Buy peacock feathers")
-        check_for_row_in_list_table(self, "2. Use peacock feathers to make a fly")
+        self.check_for_row_in_list_table("1: Buy peacock feathers")
+        self.check_for_row_in_list_table("2: Use peacock feathers to make a fly")
         
         #She sees site has generated a unique URL for her list
         self.fail('Finish the test!')
