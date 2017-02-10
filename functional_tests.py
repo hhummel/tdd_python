@@ -35,7 +35,7 @@ class NewVisitorTest(unittest.TestCase):
 
         #When she hits "Enter", the page updates and "1: Buy peacock feathers is an item on to-do list
         inputbox.send_keys(Keys.ENTER)
-        check_for_row_in_list_table(self, "1. Buy peacock feathers"):
+        check_for_row_in_list_table(self, "1. Buy peacock feathers")
 
         #There's a text box inviting her to add another item. She enters "Use peacock feathers to make a fly"
         inputbox = self.browser.find_element_by_id('id_new_item')
@@ -44,8 +44,8 @@ class NewVisitorTest(unittest.TestCase):
         
 
         #The page updates, and shows both items on her list
-        check_for_row_in_list_table(self, "1. Buy peacock feathers"):
-        check_for_row_in_list_table(self, "2. Use peacock feathers to make a fly"):
+        check_for_row_in_list_table(self, "1. Buy peacock feathers")
+        check_for_row_in_list_table(self, "2. Use peacock feathers to make a fly")
         
         #She sees site has generated a unique URL for her list
         self.fail('Finish the test!')
