@@ -1,8 +1,9 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import unittest
+import unittest, time
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -13,13 +14,13 @@ class NewVisitorTest(unittest.TestCase):
 
     def check_for_row_in_list_table(self, row_text):
         table = self.browser.find_element_by_id("id_list_table")
-        rows = self.browser.find_elements_by_tag_name("tr")
+        rows = table.find_elements_by_tag_name("tr")
         self.assertIn(row_text, [row.text for row in rows])
         
 
     def test_can_start_a_list_and_retrieve_it_later(self):
         #She goes to check out home page
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         #She notices page title and header mention To-Do lists
         self.assertIn('To-Do', self.browser.title)
@@ -35,17 +36,18 @@ class NewVisitorTest(unittest.TestCase):
 
         #When she hits "Enter", the page updates and "1: Buy peacock feathers is an item on to-do list
         inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
         self.check_for_row_in_list_table("1: Buy peacock feathers")
 
         #There's a text box inviting her to add another item. She enters "Use peacock feathers to make a fly"
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys("Use peacock feathers to make a fly")
         inputbox.send_keys(Keys.ENTER)
-        
+        time.sleep(1)
 
         #The page updates, and shows both items on her list
-        self.check_for_row_in_list_table("1: Buy peacock feathers")
         self.check_for_row_in_list_table("2: Use peacock feathers to make a fly")
+        self.check_for_row_in_list_table("1: Buy peacock feathers")
         
         #She sees site has generated a unique URL for her list
         self.fail('Finish the test!')
@@ -53,8 +55,5 @@ class NewVisitorTest(unittest.TestCase):
         #She visits the URL and sees her list is present
 
         #She quits the site
-
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')
 
 
