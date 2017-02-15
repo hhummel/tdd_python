@@ -60,7 +60,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertNotIn('make fly', page_text)
 
-        #Francis starts a new list by entering a new item
+        #Francis starts a new list by entering a new item, sees the input is nicely cetered too
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys("Buy milk")
         inputbox.send_keys(Keys.ENTER)
@@ -78,4 +78,16 @@ class NewVisitorTest(LiveServerTestCase):
         
         #Satified, they both go back to sleep
 
+    def test_layout_and_style(self):
+        #She goes to check out home page
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
 
+        #She notices the input box is nicely centered
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(inputbox.location['x'] + inputbox.size['width'] / 2, 512, delta=5)
+
+        #She starts a new list and sees the input is nicely centered there too
+        inputbox.send_keys('testing\n')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(inputbox.location['x'] + inputbox.size['width'] / 2, 512, delta=5)
